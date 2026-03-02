@@ -26,12 +26,31 @@ export const Automation = {
     return false;
   },
 
+  /**
+   * Briefly highlights an element to show the user what was clicked
+   */
+  highlightElement(el: HTMLElement): void {
+    const originalTransition = el.style.transition;
+    const originalBoxShadow = el.style.boxShadow;
+
+    el.style.transition = 'box-shadow 0.3s ease-out';
+    el.style.boxShadow = '0 0 20px 5px #2c6bed';
+
+    setTimeout(() => {
+      el.style.boxShadow = originalBoxShadow;
+      setTimeout(() => {
+        el.style.transition = originalTransition;
+      }, 300);
+    }, 400);
+  },
+
   tryRollDice(): boolean {
     const rollableDice = document.querySelector<HTMLElement>(
       '[class*="DiceUI_dice_container"][class*="DiceUI_can_be_rolled"]',
     );
     if (rollableDice) {
       console.log('AutoPlayUr: Rolling dice...');
+      this.highlightElement(rollableDice);
       rollableDice.click();
       return true;
     }
@@ -45,6 +64,7 @@ export const Automation = {
 
     if (allPlayable.length === 1) {
       console.log('AutoPlayUr: Only 1 playable piece found, clicking it...');
+      this.highlightElement(allPlayable[0]);
       allPlayable[0].click();
       return true;
     }
@@ -56,6 +76,7 @@ export const Automation = {
       );
       if (playablePieces.length === 1) {
         console.log('AutoPlayUr: Only 1 playable piece found (fallback), clicking it...');
+        this.highlightElement(playablePieces[0]);
         playablePieces[0].click();
         return true;
       }

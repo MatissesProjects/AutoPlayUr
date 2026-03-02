@@ -4,12 +4,13 @@
   "description": "AutoPlayUr is a Chrome Extension designed to automate and enhance your experience on [royalur.net](https://royalur.net/), the home of the Royal Game of Ur.",
   "main": "dist/content.js",
   "scripts": {
-    "clean": "powershell -NoProfile -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\"",
-    "copy-assets": "powershell -NoProfile -Command \"if (!(Test-Path dist)) { New-Item -ItemType Directory dist }; Copy-Item src/manifest.json dist/; Copy-Item src/image.png dist/\"",
+    "clean": "shx rm -rf dist",
+    "copy-assets": "cpy src/manifest.json dist && cpy src/image.png dist",
     "bundle": "esbuild src/content.ts --bundle --minify --outfile=dist/content.js",
     "build": "npm run clean && npm run bundle && npm run copy-assets",
     "watch": "esbuild src/content.ts --bundle --outfile=dist/content.js --watch",
     "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\"",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -27,11 +28,16 @@
   "homepage": "https://github.com/MatissesProjects/AutoPlayUr#readme",
   "devDependencies": {
     "@types/chrome": "^0.1.37",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
     "@vitest/ui": "^4.0.18",
     "cpy-cli": "^7.0.0",
     "esbuild": "^0.27.3",
+    "eslint": "^9.39.3",
+    "eslint-plugin-import": "^2.32.0",
     "happy-dom": "^20.7.0",
     "prettier": "^3.8.1",
+    "shx": "^0.4.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   }
