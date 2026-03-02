@@ -2,7 +2,7 @@ we are going to build a chrome extension for the royalur.net ur game
 
 it will feature 
     auto play when there is only 1 move
-    automatically roll dice
+    [x] automatically roll dice
     easier rule switcher
     easier difficulty switcher
 
