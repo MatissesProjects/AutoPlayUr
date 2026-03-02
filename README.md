@@ -6,6 +6,7 @@ AutoPlayUr is a Chrome Extension designed to automate and enhance your experienc
 
 - **Auto Roll Dice**: Automatically rolls the dice as soon as it's your turn.
 - **Auto Play (Single Move)**: Automatically makes a move when only one valid move is available, speeding up gameplay.
+- **Settings Persistence**: Remembers your preferred rules and bot difficulty across sessions using Chrome storage.
 - **Quick Game Launcher**: A persistent UI panel that allows you to quickly switch between different rules and bot difficulties.
   - **Rules**: Finkel, Masters, Blitz, Custom.
   - **Bots**: Easy, Medium, Hard, Panda.

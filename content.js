@@ -47,18 +47,35 @@
         `;
         document.body.appendChild(panel);
         
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentRule = urlParams.get('rules') || 'finkel';
-        const currentBot = urlParams.get('bot') || 'hard';
-        
         const ruleSelect = document.getElementById('ur-rule-select');
         const botSelect = document.getElementById('ur-bot-select');
-        if (ruleSelect.querySelector(`option[value="${currentRule}"]`)) {
-            ruleSelect.value = currentRule;
-        }
-        if (botSelect.querySelector(`option[value="${currentBot}"]`)) {
-            botSelect.value = currentBot;
-        }
+
+        // Load saved settings or defaults
+        chrome.storage.local.get(['rules', 'bot'], (result) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentRule = urlParams.get('rules') || result.rules || 'finkel';
+            const currentBot = urlParams.get('bot') || result.bot || 'hard';
+            
+            if (ruleSelect.querySelector(`option[value="${currentRule}"]`)) {
+                ruleSelect.value = currentRule;
+            }
+            if (botSelect.querySelector(`option[value="${currentBot}"]`)) {
+                botSelect.value = currentBot;
+            }
+
+            // Sync with storage if we used URL params
+            if (currentRule !== result.rules || currentBot !== result.bot) {
+                chrome.storage.local.set({ rules: currentRule, bot: currentBot });
+            }
+        });
+
+        // Save on manual change
+        ruleSelect.addEventListener('change', () => {
+            chrome.storage.local.set({ rules: ruleSelect.value });
+        });
+        botSelect.addEventListener('change', () => {
+            chrome.storage.local.set({ bot: botSelect.value });
+        });
         
         document.getElementById('ur-new-game').addEventListener('click', () => {
             const rule = ruleSelect.value;
