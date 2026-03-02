@@ -26,7 +26,7 @@ Since this extension is in development, you can install it manually:
    ```
 4. Open Chrome and navigate to `chrome://extensions/`.
 5. Enable **Developer mode** (toggle in the top right).
-6. Click **Load unpacked** and select the directory where you saved the extension files.
+6. Click **Load unpacked** and select the **`dist`** directory within the project folder.
 
 ## Usage
 

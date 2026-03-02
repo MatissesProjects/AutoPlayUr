@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "AutoPlayUr",
+  "version": "1.0",
+  "description": "Auto roll and auto play for royalur.net",
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://royalur.net/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

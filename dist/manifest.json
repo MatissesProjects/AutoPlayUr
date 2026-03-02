@@ -7,7 +7,7 @@
   "content_scripts": [
     {
       "matches": ["https://royalur.net/*"],
-      "js": ["dist/content.js"]
+      "js": ["content.js"]
     }
   ]
 }

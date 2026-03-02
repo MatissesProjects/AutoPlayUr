@@ -4,7 +4,9 @@
   "description": "AutoPlayUr is a Chrome Extension designed to automate and enhance your experience on [royalur.net](https://royalur.net/), the home of the Royal Game of Ur.",
   "main": "dist/content.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "powershell -NoProfile -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\"",
+    "copy-assets": "powershell -NoProfile -Command \"if (!(Test-Path dist)) { New-Item -ItemType Directory dist }; Copy-Item src/manifest.json dist/; Copy-Item src/image.png dist/\"",
+    "build": "npm run clean && tsc && npm run copy-assets",
     "watch": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
