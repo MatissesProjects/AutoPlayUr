@@ -5,7 +5,7 @@
   "main": "dist/content.js",
   "scripts": {
     "clean": "shx rm -rf dist",
-    "copy-assets": "cpy src/manifest.json dist && cpy src/image.png dist",
+    "copy-assets": "cpy src/manifest.json dist --flat && cpy src/image.png dist --flat",
     "bundle": "esbuild src/content.ts --bundle --minify --outfile=dist/content.js",
     "build": "npm run clean && npm run bundle && npm run copy-assets",
     "watch": "esbuild src/content.ts --bundle --outfile=dist/content.js --watch",
