@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { Storage } from '../storage';
+import { describe, it, expect } from 'vitest';
 import { UrBot, UrRule } from '../constants';
+import { Storage } from '../storage';
 
 describe('Storage', () => {
   it('should return default settings when storage is empty', async () => {

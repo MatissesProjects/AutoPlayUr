@@ -6,7 +6,7 @@ export const Automation = {
   /**
    * Main automation entry point
    */
-  async run() {
+  async run(): Promise<void> {
     const now = Date.now();
     if (now - lastActionTime < ACTION_COOLDOWN_MS) return;
 
