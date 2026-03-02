@@ -1,0 +1,27 @@
+{
+  "name": "autoplayur",
+  "version": "1.0.0",
+  "description": "AutoPlayUr is a Chrome Extension designed to automate and enhance your experience on [royalur.net](https://royalur.net/), the home of the Royal Game of Ur.",
+  "main": "dist/content.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatissesProjects/AutoPlayUr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MatissesProjects/AutoPlayUr/issues"
+  },
+  "homepage": "https://github.com/MatissesProjects/AutoPlayUr#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.1.37",
+    "typescript": "^5.9.3"
+  }
+}

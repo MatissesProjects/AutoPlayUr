@@ -16,9 +16,17 @@ AutoPlayUr is a Chrome Extension designed to automate and enhance your experienc
 Since this extension is in development, you can install it manually:
 
 1. Clone or download this repository.
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer mode** (toggle in the top right).
-4. Click **Load unpacked** and select the directory where you saved the extension files.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the extension:
+   ```bash
+   npm run build
+   ```
+4. Open Chrome and navigate to `chrome://extensions/`.
+5. Enable **Developer mode** (toggle in the top right).
+6. Click **Load unpacked** and select the directory where you saved the extension files.
 
 ## Usage
 
@@ -29,8 +37,9 @@ Since this extension is in development, you can install it manually:
 
 ## Tech Stack
 
+- **TypeScript**: Typed JavaScript for better development experience.
 - **Manifest V3**: Using the latest Chrome Extension standards.
-- **Vanilla JavaScript**: Lightweight and efficient content scripts.
+- **Vanilla DOM API**: Lightweight and efficient content scripts.
 - **CSS-in-JS**: Dynamic UI injection for the control panel.
 
 ## Development
