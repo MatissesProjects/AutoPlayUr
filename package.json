@@ -6,8 +6,10 @@
   "scripts": {
     "clean": "powershell -NoProfile -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\"",
     "copy-assets": "powershell -NoProfile -Command \"if (!(Test-Path dist)) { New-Item -ItemType Directory dist }; Copy-Item src/manifest.json dist/; Copy-Item src/image.png dist/\"",
-    "build": "npm run clean && tsc && npm run copy-assets",
-    "watch": "tsc -w",
+    "bundle": "esbuild src/content.ts --bundle --minify --outfile=dist/content.js",
+    "build": "npm run clean && npm run bundle && npm run copy-assets",
+    "watch": "esbuild src/content.ts --bundle --outfile=dist/content.js --watch",
+    "format": "prettier --write \"src/**/*.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +26,9 @@
   "homepage": "https://github.com/MatissesProjects/AutoPlayUr#readme",
   "devDependencies": {
     "@types/chrome": "^0.1.37",
+    "cpy-cli": "^7.0.0",
+    "esbuild": "^0.27.3",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   }
 }
