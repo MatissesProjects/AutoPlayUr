@@ -24,7 +24,11 @@ Since this extension is in development, you can install it manually:
    ```bash
    npm run build
    ```
-4. Open Chrome and navigate to `chrome://extensions/`.
+4. Run tests:
+   ```bash
+   npm test
+   ```
+5. Open Chrome and navigate to `chrome://extensions/`.
 5. Enable **Developer mode** (toggle in the top right).
 6. Click **Load unpacked** and select the **`dist`** directory within the project folder.
 
