@@ -34,10 +34,13 @@ describe('Automation', () => {
 
   it('should NOT click when multiple moves are available', () => {
     // Setup: Create two playable pieces
-    const p1 = document.createElement('div');
-    p1.className = 'PieceUI_can_be_played';
-    const p2 = document.createElement('div');
-    p2.className = 'PieceUI_can_be_played';
+    const p1 = document.createElement('button');
+    p1.className = 'Piece_playable__abc';
+    p1.setAttribute('data-tile', '0,0');
+    
+    const p2 = document.createElement('button');
+    p2.className = 'Piece_playable__abc';
+    p2.setAttribute('data-tile', '0,1');
     
     document.body.appendChild(p1);
     document.body.appendChild(p2);

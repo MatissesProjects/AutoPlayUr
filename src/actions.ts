@@ -59,7 +59,7 @@ export const Automation = {
 
   trySingleMove(): boolean {
     const allPlayable = document.querySelectorAll<HTMLElement>(
-      '[class*="can_be_"]:not([class*="Dice"]), [class*="playable"]:not([class*="Dice"]), [class*="movable"]:not([class*="Dice"])',
+      'button[class*="can_be_"]:not([class*="Dice"]), button[class*="playable"]:not([class*="Dice"]), button[class*="movable"]:not([class*="Dice"]), div[class*="can_be_"]:not([class*="Dice"]):not([class*="Panel"]):not([class*="Header"]), div[class*="Piece"][class*="playable"], div[class*="Piece"][class*="movable"]',
     );
 
     if (allPlayable.length === 1) {
@@ -69,10 +69,31 @@ export const Automation = {
       return true;
     }
 
+    if (allPlayable.length > 1) {
+      // Filter out duplicates if any (same position/id)
+      const uniqueElements = Array.from(allPlayable).filter((el, index, self) => 
+        index === self.findIndex((t) => (
+          t.innerText === el.innerText && 
+          t.className === el.className &&
+          t.getAttribute('data-tile') === el.getAttribute('data-tile') &&
+          t.getAttribute('aria-label') === el.getAttribute('aria-label')
+        ))
+      );
+      
+      if (uniqueElements.length === 1) {
+        console.log('AutoPlayUr: Only 1 unique playable piece found, clicking it...');
+        this.highlightElement(uniqueElements[0]);
+        uniqueElements[0].click();
+        return true;
+      }
+      
+      console.debug(`AutoPlayUr: ${allPlayable.length} playable pieces found (${uniqueElements.length} unique). Waiting for manual move.`);
+    }
+
     // Fallback heuristic for different UI versions
     if (allPlayable.length === 0) {
       const playablePieces = document.querySelectorAll<HTMLElement>(
-        '[class*="PieceUI_"][class*="playable"], [class*="Piece_"][class*="playable_"], [class*="Piece_"][class*="movable"]',
+        'button[class*="PieceUI_"][class*="playable"], button[class*="Piece_"][class*="playable_"], button[class*="Piece_"][class*="movable"]',
       );
       if (playablePieces.length === 1) {
         console.log('AutoPlayUr: Only 1 playable piece found (fallback), clicking it...');
