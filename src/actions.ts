@@ -1,6 +1,8 @@
 import { ACTION_COOLDOWN_MS } from './constants';
 
 let lastActionTime = 0;
+let lastActionType: 'roll' | 'move' | null = null;
+let lastTargetElement: HTMLElement | null = null;
 
 export const Automation = {
   /**
@@ -8,6 +10,7 @@ export const Automation = {
    */
   async run(): Promise<void> {
     const now = Date.now();
+    // Use a slightly longer cooldown for the same action type to avoid double-clicks
     if (now - lastActionTime < ACTION_COOLDOWN_MS) return;
 
     const acted = await this.tryAutoActions();
@@ -48,10 +51,20 @@ export const Automation = {
     const rollableDice = document.querySelector<HTMLElement>(
       '[class*="Dice"][class*="can_be_rolled"], [class*="Dice"][class*="rollable"]',
     );
+
+    // Only click if it's a "new" rollable state or enough time has passed
     if (rollableDice) {
+      if (lastActionType === 'roll' && lastTargetElement === rollableDice) {
+        // We already clicked this exact dice container recently
+        return false;
+      }
+
       console.log('AutoPlayUr: Rolling dice...');
       this.highlightElement(rollableDice);
       rollableDice.click();
+      
+      lastActionType = 'roll';
+      lastTargetElement = rollableDice;
       return true;
     }
     return false;
@@ -62,45 +75,37 @@ export const Automation = {
       'button[class*="can_be_"]:not([class*="Dice"]), button[class*="playable"]:not([class*="Dice"]), button[class*="movable"]:not([class*="Dice"]), div[class*="can_be_"]:not([class*="Dice"]):not([class*="Panel"]):not([class*="Header"]), div[class*="Piece"][class*="playable"], div[class*="Piece"][class*="movable"]',
     );
 
-    if (allPlayable.length === 1) {
-      console.log('AutoPlayUr: Only 1 playable piece found, clicking it...');
-      this.highlightElement(allPlayable[0]);
-      allPlayable[0].click();
+    if (allPlayable.length === 0) return false;
+
+    // Deduplicate logic
+    const uniqueElements = Array.from(allPlayable).filter((el, index, self) => 
+      index === self.findIndex((t) => (
+        t.innerText === el.innerText && 
+        t.className === el.className &&
+        t.getAttribute('data-tile') === el.getAttribute('data-tile') &&
+        t.getAttribute('aria-label') === el.getAttribute('aria-label')
+      ))
+    );
+
+    if (uniqueElements.length === 1) {
+      const target = uniqueElements[0];
+
+      // Avoid clicking the same piece twice for the same move
+      if (lastActionType === 'move' && lastTargetElement === target) {
+        return false;
+      }
+
+      console.log('AutoPlayUr: Only 1 unique playable piece found, clicking it...');
+      this.highlightElement(target);
+      target.click();
+
+      lastActionType = 'move';
+      lastTargetElement = target;
       return true;
     }
 
-    if (allPlayable.length > 1) {
-      // Filter out duplicates if any (same position/id)
-      const uniqueElements = Array.from(allPlayable).filter((el, index, self) => 
-        index === self.findIndex((t) => (
-          t.innerText === el.innerText && 
-          t.className === el.className &&
-          t.getAttribute('data-tile') === el.getAttribute('data-tile') &&
-          t.getAttribute('aria-label') === el.getAttribute('aria-label')
-        ))
-      );
-      
-      if (uniqueElements.length === 1) {
-        console.log('AutoPlayUr: Only 1 unique playable piece found, clicking it...');
-        this.highlightElement(uniqueElements[0]);
-        uniqueElements[0].click();
-        return true;
-      }
-      
-      console.debug(`AutoPlayUr: ${allPlayable.length} playable pieces found (${uniqueElements.length} unique). Waiting for manual move.`);
-    }
-
-    // Fallback heuristic for different UI versions
-    if (allPlayable.length === 0) {
-      const playablePieces = document.querySelectorAll<HTMLElement>(
-        'button[class*="PieceUI_"][class*="playable"], button[class*="Piece_"][class*="playable_"], button[class*="Piece_"][class*="movable"]',
-      );
-      if (playablePieces.length === 1) {
-        console.log('AutoPlayUr: Only 1 playable piece found (fallback), clicking it...');
-        this.highlightElement(playablePieces[0]);
-        playablePieces[0].click();
-        return true;
-      }
+    if (uniqueElements.length > 1) {
+      console.debug(`AutoPlayUr: ${uniqueElements.length} unique playable pieces found. Waiting for manual move.`);
     }
 
     return false;

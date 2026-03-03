@@ -18,7 +18,6 @@ export interface AppSettings {
 }
 
 export const ACTION_COOLDOWN_MS = 600;
-export const POLL_INTERVAL_MS = 200;
 
 export const UI_CONSTANTS = {
   PANEL_ID: 'autoplayur-panel',

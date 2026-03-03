@@ -24,7 +24,14 @@ global.chrome = {
   },
 } as any;
 
-// Reset storage before each test
+// Mock MutationObserver for Happy DOM
+global.MutationObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  disconnect: vi.fn(),
+  takeRecords: vi.fn(),
+}));
+
+// Reset mocks before each test
 beforeEach(() => {
   vi.clearAllMocks();
   for (const key in mockStorage) {
