@@ -46,7 +46,7 @@ export const Automation = {
 
   tryRollDice(): boolean {
     const rollableDice = document.querySelector<HTMLElement>(
-      '[class*="DiceUI_dice_container"][class*="DiceUI_can_be_rolled"]',
+      '[class*="Dice"][class*="can_be_rolled"], [class*="Dice"][class*="rollable"]',
     );
     if (rollableDice) {
       console.log('AutoPlayUr: Rolling dice...');
@@ -59,7 +59,7 @@ export const Automation = {
 
   trySingleMove(): boolean {
     const allPlayable = document.querySelectorAll<HTMLElement>(
-      '[class*="can_be_"]:not([class*="DiceUI"])',
+      '[class*="can_be_"]:not([class*="Dice"]), [class*="playable"]:not([class*="Dice"]), [class*="movable"]:not([class*="Dice"])',
     );
 
     if (allPlayable.length === 1) {
@@ -72,7 +72,7 @@ export const Automation = {
     // Fallback heuristic for different UI versions
     if (allPlayable.length === 0) {
       const playablePieces = document.querySelectorAll<HTMLElement>(
-        '[class*="PieceUI_"][class*="playable"], [class*="Piece_"][class*="playable_"]',
+        '[class*="PieceUI_"][class*="playable"], [class*="Piece_"][class*="playable_"], [class*="Piece_"][class*="movable"]',
       );
       if (playablePieces.length === 1) {
         console.log('AutoPlayUr: Only 1 playable piece found (fallback), clicking it...');
